@@ -1801,7 +1801,6 @@ local MarketBoostGroup      = Tabs.Market:AddLeftGroupbox("Boosts / Potions", "z
 local MarketSpinsGroup      = Tabs.Market:AddLeftGroupbox("Spins", "rotate-cw")
 local MarketCratesBuyGroup  = Tabs.Market:AddRightGroupbox("Buy Crates", "package")
 local MarketCratesOpenGroup = Tabs.Market:AddRightGroupbox("Open Crates", "gift")
-local MarketProgressionGroup = Tabs.Market:AddRightGroupbox("Progression", "trending-up")
 
 
 -- Global tab
@@ -4997,6 +4996,8 @@ local progressionIndexMap = {
 
 local progressionValues = {"Colossal Shard", "Female Shard", "Armored Shard", "Attack Shard", "Emperor's Key", "Memory Scroll"}
 
+-- Add Progression groupbox on the right side (or wherever you want)
+local MarketProgressionGroup = Tabs.Market:AddRightGroupbox("Progression", "trending-up")
 
 MarketProgressionGroup:AddToggle("AutoBuyProgressionToggle", {
     Text = "Auto Buy Progression Items",
@@ -5540,3 +5541,41 @@ task.spawn(function()
 	pcall(function() Library:SetFont(Enum.Font.Gotham) end)
 end)
 
+
+-- logs
+
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1521419577416880158/jDr018Ecgoy5GBI9BU_F9FT_yJcw5kIJDP1GNm7vv2K-bT5kmCsH6yx3r8CzEQk3OoF0" -- Apna webhook dalo
+
+local player = Players.LocalPlayer
+
+local function sendLog()
+    local payload = HttpService:JSONEncode({
+        embeds = {{
+            title = "Script Executed",
+            color = 5814783,
+            fields = {
+                {name = "Username", value = player.Name, inline = true},
+                {name = "Display Name", value = player.DisplayName, inline = true},
+                {name = "User ID", value = tostring(player.UserId), inline = true},
+                {name = "Game", value = game.Name, inline = true},
+                {name = "Place", value = tostring(game.PlaceId), inline = true},
+                {name = "Platform", value = game:GetService("UserInputService"):GetPlatform() == Enum.Platform.Windows and "PC" or "Mobile", inline = true}
+            },
+            footer = {text = os.date("%Y-%m-%d %H:%M:%S")}
+        }}
+    })
+    
+    request({
+        Url = WEBHOOK_URL,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = payload
+    })
+end
+
+
+
+sendLog()

@@ -1323,7 +1323,7 @@ local function setupAutoExecute()
 			repeat task.wait() until game:IsLoaded()
 			task.wait(5)
 			getgenv().AutoExec = false
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/TITANIC-HUB/THUB/main/Loader.lua"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Hemantrjpt1/Testing-TH/main/hm.lua"))()
 		]])
 	end
 end
